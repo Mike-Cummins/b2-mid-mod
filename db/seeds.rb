@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+@it = Department.create!(name: "IT", floor: 'Basement')
+@hr = Department.create!(name: "HR", floor: 'First')
+@sales = Department.create!(name: "Sales", floor: 'Second')
+@legal = Department.create!(name: "Legal", floor: 'Third')
+
+@sam = @it.employees.create!
