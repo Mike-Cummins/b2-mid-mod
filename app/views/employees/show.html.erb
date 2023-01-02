@@ -5,6 +5,11 @@
 <h3 id ="oldest_ticket">Oldest Ticket: <%= @oldest_ticket.subject %></h3>
 <p>All Tickets: <% @tickets.each do |ticket| %></p>
   <p>Subject: <%= ticket.subject %> Age: <%= ticket.age %></p>
+<% end %>
 
+<%= form_with url: "/employees/#{@employee.id}", method: :patch, local: true do |form| %>
+  <%= form.label :ticket_id %>
+  <%= form.text_field :ticket_id %>
+  <%= form.submit 'Submit' %>
 <% end %>
 

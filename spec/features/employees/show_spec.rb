@@ -11,8 +11,7 @@ RSpec.describe 'Employee Show' do
         @ticket_1 = @mat.tickets.create!(subject: "Mouse", age: 3)
         @ticket_2 = @mat.tickets.create!(subject: "Monitor", age: 1)
         @ticket_3 = @mat.tickets.create!(subject: "Phone", age: 5)
-
-
+        @ticket_4 = Ticket.create!(subject: "Keyboard", age: 1)
       end
 
       it 'Displays the employee name and department' do
@@ -24,19 +23,33 @@ RSpec.describe 'Employee Show' do
         expect(page).to_not have_content(@legal.name)
       end
 
-      it 'Displays all tickets from oldest to newest' do
+      it 'Displays all tickets belonging to the employee, from oldest to newest' do
         visit "/employees/#{@mat.id}"
     
+        expect(page).to_not have_content(@ticket_4.subject)
         expect(@ticket_3.subject).to appear_before(@ticket_1.subject)
         expect(@ticket_1.subject).to appear_before(@ticket_2.subject)
       end
 
       it 'Has another section that shows only the oldest ticket' do
         visit "/employees/#{@mat.id}"
-save_and_open_page
+
         within "#oldest_ticket" do
           expect(page).to have_content(@ticket_3.subject)
+          expect(page).to_not have_content(@ticket_1.subject)
         end
+      end
+
+      it 'has a form to add tickets to employee' do
+        visit "/employees/#{@mat.id}"
+
+        expect(page).to_not have_content(@ticket_4.subject)
+
+        fill_in("ticket_id", with: @ticket_4.id)
+        click_on("Submit")
+save_and_open_page
+        expect(current_path).to eq("/employees/#{@mat.id}")
+        expect(page).to have_content(@ticket_4.subject)
       end
     end
   end
